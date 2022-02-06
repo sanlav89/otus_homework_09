@@ -9,8 +9,18 @@ include_directories(${Boost_INCLUDE_DIR})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-file(GLOB_RECURSE SOURCES *.cpp)
-file(GLOB_RECURSE HEADERS *.h)
+# SOURCES
+set (
+    SOURCES
+        main.cpp
+)
+
+# HEADERS
+ set (
+     HEADERS
+        server.h
+        session.h
+ )
 
 add_executable(bulk_server ${SOURCES} ${HEADERS})
 
