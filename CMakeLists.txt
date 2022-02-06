@@ -34,9 +34,16 @@ set (
  )
 
 add_executable(bulk_server ${SOURCES} ${HEADERS})
+add_executable(bulk_client client.cpp)
 
 target_link_libraries(
     bulk_server
+        ${Boost_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
+
+target_link_libraries(
+    bulk_client
         ${Boost_LIBRARIES}
         ${CMAKE_THREAD_LIBS_INIT}
 )

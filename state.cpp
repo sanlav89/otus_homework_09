@@ -49,7 +49,6 @@ StateStatic::StateStatic(Handler *handler) : StateBase(handler)
 void StateStatic::cmdOpenedBracket()
 {
     m_handler->pushOpenedBracket();
-//    m_handler->processBulkStatic();
     m_handler->setState(StateBasePtr{new StateDynamic(m_handler)});
 }
 

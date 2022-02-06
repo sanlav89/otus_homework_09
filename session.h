@@ -18,8 +18,6 @@ public:
         : m_socket(std::move(socket))
         , m_handler(handler)
     {
-        static auto session = 0;
-        std::cout << ++session << std::endl;
     }
 
     ~Session()
@@ -46,11 +44,7 @@ private:
             [this, self](boost::system::error_code error, std::size_t length)
             {
                 if (!error) {
-//                    std::cout << "receive "
-//                              << length << "="
-//                              << std::string{m_buffer, length} << std::endl;
                     m_handler->receive(m_buffer, length);
-                    m_handler->receiveEof();
                 }
             }
         );
