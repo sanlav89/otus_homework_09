@@ -15,7 +15,7 @@ class Handler
 public:
 
     // High level logic
-    Handler(const size_t &bulkSize);
+    Handler(const size_t &bulkSize, std::queue<Cmd> &cmdsStatic);
     void registerLogger(logger::LogPtr logger);
     void receive(const char *data, size_t size);
     void receiveEof();
@@ -31,18 +31,22 @@ public:
     // Handler functionality
     void pushOpenedBracket();
     void popOpenedBracket();
-    void pushCmd(const Cmd &cmd);
-    void processBulk();
+    void pushCmdStatic(const Cmd &cmd);
+    void pushCmdDynamic(const Cmd &cmd);
+    void processBulkStatic();
+    void processBulkDynamic();
 
 private:
     size_t m_bulkSize;
     std::string m_buffer;
     std::stack<Bracket> m_brackets;
-    std::queue<Cmd> m_cmds;
+    std::queue<Cmd> m_cmdsDynamic;
+    std::queue<Cmd> &m_cmdsStatic;
     std::list<logger::LogPtr> m_loggers;
     StateBasePtr m_state;
 
     void reveiveCmd(const Cmd &cmd);
+    void processBulk(std::queue<Cmd> &bulk);
 
     static bool isOpenedBracket(const Cmd &cmd);
     static bool isClosedBracket(const Cmd &cmd);

@@ -4,8 +4,9 @@
 
 using namespace bulk;
 
-Handler::Handler(const size_t &bulkSize)
+Handler::Handler(const size_t &bulkSize, std::queue<Cmd> &cmdsStatic)
     : m_bulkSize(bulkSize)
+    , m_cmdsStatic(cmdsStatic)
     , m_state(StateBasePtr{new StateEmpty(this)})
 {
 }
@@ -55,7 +56,7 @@ size_t Handler::bulkSize() const
 
 size_t Handler::cmdsSize() const
 {
-    return m_cmds.size();
+    return m_cmdsStatic.size();
 }
 
 size_t Handler::bracketsSize() const
@@ -73,19 +74,34 @@ void Handler::popOpenedBracket()
     m_brackets.pop();
 }
 
-void Handler::pushCmd(const Cmd &cmd)
+void Handler::pushCmdStatic(const Cmd &cmd)
 {
-    m_cmds.push(cmd);
+    m_cmdsStatic.push(cmd);
 }
 
-void Handler::processBulk()
+void Handler::pushCmdDynamic(const Cmd &cmd)
 {
-    if (!m_cmds.empty()) {
+    m_cmdsDynamic.push(cmd);
+}
+
+void Handler::processBulkStatic()
+{
+    processBulk(m_cmdsStatic);
+}
+
+void Handler::processBulkDynamic()
+{
+    processBulk(m_cmdsDynamic);
+}
+
+void Handler::processBulk(std::queue<Cmd> &bulk)
+{
+    if (!bulk.empty()) {
         for (const auto &logger : m_loggers) {
-            logger->process(m_cmds);
+            logger->process(bulk);
         }
-        while (!m_cmds.empty()) {
-            m_cmds.pop();
+        while (!bulk.empty()) {
+            bulk.pop();
         }
     }
 }

@@ -18,6 +18,8 @@ public:
         : m_socket(std::move(socket))
         , m_handler(handler)
     {
+        static auto session = 0;
+        std::cout << ++session << std::endl;
     }
 
     ~Session()

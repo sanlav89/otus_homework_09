@@ -25,7 +25,7 @@ private:
             [this](boost::system::error_code error, tcp::socket socket)
             {
                 if (!error) {
-                    Handler *handler{new Handler(m_bulkSize)};
+                    Handler *handler{new Handler(m_bulkSize, m_cmdsStatic)};
                     handler->registerLogger(m_console);
                     handler->registerLogger(m_logfile);
                     std::make_shared<Session>(std::move(socket), handler)->start();
@@ -39,6 +39,7 @@ private:
     std::size_t m_bulkSize;
     logger::LogPtr m_console;
     logger::LogPtr m_logfile;
+    std::queue<Cmd> m_cmdsStatic;
 
 };
 
