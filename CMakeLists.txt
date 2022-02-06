@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(bulk_server)
+# PROJECT
+set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PROJECT_VESRION 0.0.${PATCH_VERSION})
+set(PROJECT_NAME "bulk_server" CACHE STRING "Project name")
+project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
 
 find_package(Boost COMPONENTS system REQUIRED)
 find_package(Threads)
@@ -31,7 +35,7 @@ target_link_libraries(
 )
 
 ### Package
-install(TARGETS bulk_server RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
