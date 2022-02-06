@@ -6,7 +6,7 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 set(PROJECT_NAME "bulk_server" CACHE STRING "Project name")
 project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
 
-find_package(Boost COMPONENTS system REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 find_package(Threads)
 include_directories(${Boost_INCLUDE_DIR})
 
@@ -16,6 +16,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # SOURCES
 set (
     SOURCES
+        handler.cpp
+        logger.cpp
+        state.cpp
         main.cpp
 )
 
@@ -24,6 +27,10 @@ set (
      HEADERS
         server.h
         session.h
+        assignments.h
+        handler.h
+        logger.h
+        state.h
  )
 
 add_executable(bulk_server ${SOURCES} ${HEADERS})
